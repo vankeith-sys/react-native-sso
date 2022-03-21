@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Task from './components/Task'
+import { authentication } from './firebase-config'
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export default function App() {
   const [task, setTask] = useState();
@@ -18,6 +20,17 @@ export default function App() {
     let itemsCopy = [...taskItems];
     itemsCopy.splice(index, 1);
     setTaskItems(itemsCopy);
+  }
+
+  const logInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authentication, provider)
+    .then((re)=>{
+      console.log(re);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
   }
       
 
