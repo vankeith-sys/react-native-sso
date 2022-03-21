@@ -4,6 +4,8 @@ import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, To
 import Task from './components/Task'
 import { authentication } from './firebase-config'
 import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
 
 export default function App() {
   const [task, setTask] = useState();
@@ -51,6 +53,43 @@ export default function App() {
     // ngrok http 3000
   }
 
+
+  // for apple auth: npm install --save @react-native-firebase/app
+  // yarn add @react-native-firebase/auth
+  // need com.build.identifier
+  // sudo arch -x86_64 gem install ffi
+  // arch -x86 pod install 
+  // yarn add @invertase/react-native-apple-authentication
+
+  // apple dev account -> cert, identifiers, profiles -> identifiers 
+    // need to register app with iOS Bundle ID
+    // download the .plist file
+    // put plist file in build / xcode / project
+
+
+
+  async function logInWithApple() {
+    // Start the sign-in request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+  
+    // Ensure Apple returned a user identityToken
+    if (!appleAuthRequestResponse.identityToken) {
+      throw new Error('Apple Sign-In failed - no identify token returned');
+    }
+  
+    // Create a Firebase credential from the response
+    const { identityToken, nonce } = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+  
+    // Sign the user in with the credential
+    return auth().signInWithCredential(appleCredential);
+  }
+
+  
+
   return (
     <View style={styles.container}>
       {/* <Text>Holy shet, this is my first react native app.</Text>
@@ -81,7 +120,20 @@ export default function App() {
           </View>
           </TouchableOpacity>
           {/* Apple */}
-          <Task text={'Log In with Apple'}/>
+          <TouchableOpacity onPress={() => logInWithApple()}>
+          <View style={styles.items}>
+            <Task text={'Log In with Apple'}/>
+            <AppleButton
+              buttonStyle={AppleButton.Style.WHITE}
+              buttonType={AppleButton.Type.SIGN_IN}
+              style={{
+                width: 160,
+                height: 45,
+              }}
+              onPress={() => logInWithApple().then(() => console.log('Apple sign-in complete!'))}
+            />
+          </View>
+          </TouchableOpacity>
           <Task text={'Log In with Email'}/>
         </View>
       </View>
