@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Task from './components/Task'
 
 export default function App() {
@@ -8,8 +8,16 @@ export default function App() {
   const [taskItems, setTaskItems] = useState([]);
 
   const handleAddTask = () => {
-    console.log(task);
-    // setTaskItems([...taskItems, task])
+    // console.log(task);
+    Keyboard.dismiss();
+    setTaskItems([...taskItems, task])
+    setTask(null)
+  }
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
   }
       
 
@@ -21,7 +29,20 @@ export default function App() {
         <Text style={styles.sectionTitle}>Unified Single Sign On</Text>
         <View style={styles.items}>
           {/* This is where the tasks will go. */}
-          <Task text={'Log In with Google'}/>
+          {
+            taskItems.map((item, index) => {
+              return (
+                <TouchableOpacity key={index} onPress={() => completeTask()}>
+                  <Task text={item} />
+                </TouchableOpacity>
+              )
+            })
+          }
+          <TouchableOpacity onPress={() => logInWithGoogle()}>
+          <View style={styles.items}>
+            <Task text={'Log In with Google'}/>
+          </View>
+          </TouchableOpacity>
           <Task text={'Log In with Facebook'}/>
           <Task text={'Log In with Apple'}/>
           <Task text={'Log In with Email'}/>
