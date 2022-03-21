@@ -4,8 +4,8 @@ import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, To
 import Task from './components/Task'
 import { authentication } from './firebase-config'
 import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
-import auth from '@react-native-firebase/auth';
+// import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+// import auth from '@react-native-firebase/auth';
 
 export default function App() {
   const [task, setTask] = useState();
@@ -68,25 +68,25 @@ export default function App() {
 
 
 
-  async function logInWithApple() {
-    // Start the sign-in request
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    });
+  // async function logInWithApple() {
+  //   // Start the sign-in request
+  //   const appleAuthRequestResponse = await appleAuth.performRequest({
+  //     requestedOperation: appleAuth.Operation.LOGIN,
+  //     requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  //   });
   
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
+  //   // Ensure Apple returned a user identityToken
+  //   if (!appleAuthRequestResponse.identityToken) {
+  //     throw new Error('Apple Sign-In failed - no identify token returned');
+  //   }
   
-    // Create a Firebase credential from the response
-    const { identityToken, nonce } = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+  //   // Create a Firebase credential from the response
+  //   const { identityToken, nonce } = appleAuthRequestResponse;
+  //   const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
   
-    // Sign the user in with the credential
-    return auth().signInWithCredential(appleCredential);
-  }
+  //   // Sign the user in with the credential
+  //   return auth().signInWithCredential(appleCredential);
+  // }
 
   
 
@@ -123,7 +123,7 @@ export default function App() {
           <TouchableOpacity onPress={() => logInWithApple()}>
           <View style={styles.items}>
             <Task text={'Log In with Apple'}/>
-            <AppleButton
+            {/* <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
               style={{
@@ -131,7 +131,7 @@ export default function App() {
                 height: 45,
               }}
               onPress={() => logInWithApple().then(() => console.log('Apple sign-in complete!'))}
-            />
+            /> */}
           </View>
           </TouchableOpacity>
           <Task text={'Log In with Email'}/>
