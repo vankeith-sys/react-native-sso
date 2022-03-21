@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Task from './components/Task'
 import { authentication } from './firebase-config'
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 export default function App() {
   const [task, setTask] = useState();
@@ -32,7 +32,24 @@ export default function App() {
       console.log(err);
     })
   }
-      
+  
+  const logInWithFacebook = () => {
+    // Facebook Firebase APP ID: 844951199550308
+    // Facebook Firebase APP Secret: d173ac35ea1c7aad9a6ccd27cc95945e
+    // Facebook Firebase OAuth Redirect URL: https://mypolicy-c57d9.firebaseapp.com/__/auth/handler
+    // Dashboard -> Facebook Login -> Web
+    // Facebook Login -> Settings -> Valid OAuth Redirect URIs (Paste Redirect URI above)
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(authentication,provider)
+    .then((re)=>{
+      console.log(re);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+    // Facebook Login needs a secure connection to test
+    // ngrok http 3000
+  }
 
   return (
     <View style={styles.container}>
@@ -51,12 +68,19 @@ export default function App() {
               )
             })
           }
+          {/* Google */}
           <TouchableOpacity onPress={() => logInWithGoogle()}>
           <View style={styles.items}>
             <Task text={'Log In with Google'}/>
           </View>
           </TouchableOpacity>
-          <Task text={'Log In with Facebook'}/>
+          {/* Facebook */}
+          <TouchableOpacity onPress={() => logInWithFacebook()}>
+          <View style={styles.items}>
+            <Task text={'Log In with Facebook'}/>
+          </View>
+          </TouchableOpacity>
+          {/* Apple */}
           <Task text={'Log In with Apple'}/>
           <Task text={'Log In with Email'}/>
         </View>
