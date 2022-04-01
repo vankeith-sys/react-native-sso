@@ -4,10 +4,15 @@ import { Button, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, To
 import Task from './components/Task'
 import { authentication } from './firebase-config'
 import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { AppRegistry } from 'react-native';
+// import App from './App';
 // import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
 // import auth from '@react-native-firebase/auth';
 
+
+
 export default function App() {
+  AppRegistry.registerComponent('main',() => App);
   const [task, setTask] = useState();
   const [taskItems, setTaskItems] = useState([]);
 
@@ -184,7 +189,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#FFF',
     borderRadius: 60,
-    borderColor: '#COCOCO',
+    // borderColor: '#COCOCO',
+    borderColor: '#ff00ff',
     borderWidth: 1,
     width: 250,
   },
@@ -195,7 +201,8 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#COCOCO',
+    // borderColor: '#COCOCO',
+    borderColor: '#ff00ff',
     borderWidth: 1,
   },
   addText: {},
